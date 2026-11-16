@@ -1,0 +1,9 @@
+.character-quota.json
+*quota*.json
+*.key
+*.pem
+.env
+.env.*
+node_modules/
+deploy/
+*.log

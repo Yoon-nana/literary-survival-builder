@@ -1,0 +1,7 @@
+const fs=require('fs');fs.mkdirSync('deploy',{recursive:true});let html=fs.readFileSync('문학_서바이벌_게임_만들기.html','utf8');html=html.replaceAll("fetch('/api/quota?id='", "fetch('api/quota?id='").replaceAll("fetch('/api/character'", "fetch('api/character'");fs.writeFileSync('deploy/index.html',html);
+let server=fs.readFileSync('character-server.cjs','utf8');function sub(a,b){if(!server.includes(a))throw Error('missing '+a.slice(0,80));server=server.replace(a,b)}
+sub("port=8768,key=process.env.OPENRAOUTER_API_KEY||process.env.OPENROUTER_API_KEY,quotaPath=path.join(root,'.character-quota.json');", "port=18766,key=fs.readFileSync('/var/lib/literary-survival/openrouter.key','utf8').trim(),quotaPath='/var/lib/literary-survival/character-quota.json', dailyPath='/var/lib/literary-survival/daily-usage.json';");
+sub("path.join(root,'문학_서바이벌_게임_만들기.html')", "path.join(root,'index.html')");
+sub("req.headers.origin!==`http://127.0.0.1:${port}`", "req.headers.origin!=='https://yoong.site'");
+sub("pending.add(id);\ntry{", "pending.add(id);const day=new Date().toISOString().slice(0,10);let daily={};try{daily=JSON.parse(fs.readFileSync(dailyPath,'utf8'))}catch{};if(daily.day!==day)daily={day,attempts:0};if(daily.attempts>=200){pending.delete(id);return send(res,429,{error:'오늘의 전체 생성 횟수가 끝났어요. 내일 다시 시도해 주세요.'})}daily.attempts++;try{fs.writeFileSync(dailyPath,JSON.stringify(daily),'utf8')}catch{pending.delete(id);return send(res,500,{error:'생성 횟수를 저장하지 못했습니다.'})}\ntry{");
+fs.writeFileSync('deploy/server.cjs',server);
